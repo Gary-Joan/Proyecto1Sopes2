@@ -1,10 +1,10 @@
 var mysql = require('mysql');
 
 /*Variables de entorno para la conexion con la BD*/
-const DBHOST = process.env.DBHOST || "userdb";
+const DBHOST = process.env.DBHOST || "localhost";
 const USER = process.env.DBUSERNAME || "root";
-const PASS = process.env.DBPASSWORD || "123456789";
-const DBNAME = process.env.DBNAME || "usuarioDB";
+const PASS = process.env.DBPASSWORD || "1234";
+const DBNAME = process.env.DBNAME || "proyecto";
 
 var connection = mysql.createConnection({
     host: DBHOST,

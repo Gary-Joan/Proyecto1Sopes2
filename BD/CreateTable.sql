@@ -1,0 +1,26 @@
+CREATE USER 'admdb'@'localhost' IDENTIFIED BY '123456789';
+GRANT ALL PRIVILEGES ON *.* TO 'admdb'@'localhost' WITH GRANT OPTION;
+CREATE USER 'admdb'@'%' IDENTIFIED BY '123456789';
+GRANT ALL PRIVILEGES ON *.* TO 'admdb'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
+use proyecto;
+CREATE TABLE IF NOT EXISTS juego(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  imagen_juego VARCHAR(500) NOT NULL,
+  PRIMARY KEY (id)
+);
+CREATE TABLE IF NOT EXISTS usuario(
+  id_usuario INTEGER NOT NULL AUTO_INCREMENT,
+  nombre_usuario VARCHAR(100) NOT NULL,
+  contasena VARCHAR (50) NOT NULL,
+  PRIMARY KEY (id_usuario)
+);
+CREATE TABLE IF NOT EXISTS descarga(
+  id_usuario INTEGER NOT NULL,
+  id_juego INTEGER NOT NULL,
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+  FOREIGN KEY (id_juego) REFERENCES juego(id)
+);

@@ -22,8 +22,8 @@ RUN npm install nodemon -g --quiet
 # Copia la Aplicación
 COPY . .
 
-# Expone la aplicación en el puerto 8000
-EXPOSE 8000
+# Expone la aplicación en el puerto 80
+EXPOSE 80
 
 # Inicia la aplicación al iniciar al contenedor
 CMD nodemon -L --watch . app.js

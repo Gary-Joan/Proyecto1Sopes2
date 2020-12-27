@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+#=========
+  api:
+    build: ./API
+    ports:
+     - "80:80"
+    depends_on:
+     - db
+    environment:
+     - DATABASE_HOST=db
+    volumes:
+     - ./API:/app
+  db:
+    build: ./BD
+    ports:
+     - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password

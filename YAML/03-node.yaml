@@ -4,7 +4,7 @@ metadata:
   name: dev-node
   namespace: backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: node
@@ -19,8 +19,8 @@ spec:
         app: node
     spec:
       containers:
-      - image: joseandresrp/sopes1apinodejs
-        name: apinodejs
+      - image: garyjoan14/apinode
+        name: apinode
         ports:
         - containerPort: 80
       restartPolicy: Always

@@ -14,11 +14,23 @@ class App extends Component {
       descargas: [], //ya esta
       todasDescargas: [],
       auxiliar:'',
+      aux2:'',
+      aux3:'',
+      usunombre:'',
+      contra:'',
     };
 
     this.handleChangeWeight= this.handleChangeWeight.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-//    this.chartReference = React.createRef();
+
+    this.handleChangeInsert = this.handleChangeInsert.bind(this);
+    this.handleChangeInsert2 = this.handleChangeInsert2.bind(this);
+    this.onSubmit2 = this.onSubmit2.bind(this);
+
+
+    this.handleChangeNombre = this.handleChangeNombre.bind(this);
+    this.handleChangeContra = this.handleChangeContra.bind(this);
+    this.onSubmit3 = this.onSubmit3.bind(this);
   }
 
 
@@ -31,13 +43,7 @@ class App extends Component {
     fetch(API + '/getdescargas') //obtiene todas las descargas
       .then(response => response.json())
       .then(data => this.setState({ descargas: data }));     
-
-     fetch(API + '/getalldescargas') //obtiene la contidad de juegos descargados por nombre de id_usuario
-      .then(response => response.json())
-      .then(data => this.setState({ todasDescargas: data }));
          
-
-
   }
 
   handleChangeWeight(event) {
@@ -51,6 +57,66 @@ class App extends Component {
   }
 
 
+  handleChangeInsert(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+
+  handleChangeInsert2(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+
+  handleChangeNombre(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+
+
+  handleChangeContra(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+
+  onSubmit3(event) {
+    event.preventDefault();
+    const nombree = {id:this.state.usunombre};
+    const contra = {id:this.state.contra};
+  
+    console.log(nombree.id);
+    console.log(contra.id);
+  
+    fetch(`http://35.239.171.80/insertusuario?nombre=${nombree.id}&contrasena=${contra.id}`, {
+      method: "POST"  
+    }).then((response) => response.json())
+    
+  }
+
+
   onSubmit(event) {
     event.preventDefault();
     const data = {id:this.state.auxiliar};
@@ -59,8 +125,28 @@ class App extends Component {
       method: "GET"  
     }).then((response) => response.json())
     .then(data => this.setState({usuario:data}));
+
+    fetch(`http://35.239.171.80/getalldescargas?auxiliar=${data.id}`, {
+      method: "GET"  
+    }).then((response) => response.json())
+    .then(data => this.setState({todasDescargas:data}));
 }
+
+
+onSubmit2(event) {
+  event.preventDefault();
+  const idJuego = {id:this.state.aux2};
+  const idUsu = {id:this.state.aux3};
+
+  console.log(idUsu.id);
+  console.log(idJuego.id);
+
+  fetch(`http://35.239.171.80/insertdescarga?id_usuario=${idUsu.id}&id_juego=${idJuego.id}`, {
+    method: "POST"  
+  }).then((response) => response.json())
   
+}
+
 
   render() {
     const { juegos } = this.state;
@@ -76,7 +162,7 @@ class App extends Component {
           <ul>
             {juegos.map(depa =>
               <li>
-                <p>Usuario: {depa.id}, Nombre: {depa.nombre}, Imagen:{depa.imagen_juego}</p>               
+                <p>IdJuego: {depa.id}, Nombre: {depa.nombre}</p>               
               </li>
             )}
           </ul>
@@ -107,19 +193,65 @@ class App extends Component {
                 <button type="submit">Ver datos</button>                
             </form>
 
-            <ul>
+            <h4>Datos del usuario</h4>
+            <ul>              
               {usuario.map(depa =>
                 <li>
                   <p>Usuario: {depa.id_usuario}, Nombre: {depa.nombre_usuario}, Contrasenia: {depa.contasena}</p>               
                 </li>
               )}
-          </ul>   
-        </div>                 
-        </div>    
-        
-      </div>
-    );
-  }
+            </ul>   
+
+            <h4>Descargas del usuario</h4>
+            <ul>              
+              {todasDescargas.map(depa =>
+                <li>
+                  <p>Id del juego: {depa.id_juego}, Total descargas: {depa.total}</p>               
+                </li>
+              )}
+            </ul>
+                                  
+        </div>         
+        </div>  
+
+        <div>
+          <h4>Descargar juego</h4>                    
+          <form onSubmit={this.onSubmit2}>
+                <input 
+                    name="aux2" 
+                    value={this.state.aux2}
+                    onChange={this.handleChangeInsert} 
+                    placeholder="Ingrese el id del juego"></input>
+                    
+                    <input 
+                    name="aux3" 
+                    value={this.state.aux3}
+                    onChange={this.handleChangeInsert2} 
+                    placeholder="Ingrese Id del usuario"></input>
+
+                <button type="submit">Insertar</button>                
+            </form>          
+
+
+            <h4>Insertar usuario</h4>                    
+          <form onSubmit={this.onSubmit3}>
+                <input 
+                    name="usunombre" 
+                    value={this.state.usunombre}
+                    onChange={this.handleChangeNombre} 
+                    placeholder="Ingrese el nombre del usuario"></input>
+                    
+                    <input 
+                    name="contra" 
+                    value={this.state.contra}
+                    onChange={this.handleChangeContra} 
+                    placeholder="Ingrese la contrasenia"></input>
+
+                <button type="submit">Insertar Usuario</button>                
+            </form>  
+        </div> 
+
+      </div>);}
 }
 
 export default App;

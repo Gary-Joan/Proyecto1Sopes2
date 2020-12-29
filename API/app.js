@@ -62,10 +62,13 @@ app.get("/getdescargas", (req, res) => {
 });
 
 app.get("/getusuario", (req, res) => {
-    var sql = `SELECT * FROM usuario where id_usuario ('${req.body.nombre_usuario}')`;
+
+    var user_id = req.query.auxiliar
+
+    var sql = `SELECT * FROM usuario where id_usuario='${user_id}'`;
     connection.query(sql, function(err, result) {
         if (err) res.sendStatus(404);
-        res.send(result)
+        res.json(result)
     });
 });
 

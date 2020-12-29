@@ -17,7 +17,7 @@ class App extends Component {
     };
 
     this.handleChangeWeight= this.handleChangeWeight.bind(this);
-
+    this.onSubmit = this.onSubmit.bind(this);
 //    this.chartReference = React.createRef();
   }
 
@@ -35,7 +35,9 @@ class App extends Component {
      fetch(API + '/getalldescargas') //obtiene la contidad de juegos descargados por nombre de id_usuario
       .then(response => response.json())
       .then(data => this.setState({ todasDescargas: data }));
-      
+         
+
+
   }
 
   handleChangeWeight(event) {
@@ -50,21 +52,13 @@ class App extends Component {
 
 
   onSubmit(event) {
-    
-    console.log("ya llegue bro");
-    fetch('http://35.239.171.80/getusuario', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },        
-        body: ({
-          auxiliar : this.state.auxiliar,                    
-        })        
-        });
-        /*.then(response => response.json())
-        .then(data => this.setState({ usuario: data }))*/
     event.preventDefault();
+    const data = {id:this.state.auxiliar};
+
+    fetch(`http://35.239.171.80/getusuario?auxiliar=${data.id}`, {
+      method: "GET"  
+    }).then((response) => response.json())
+    .then(data => this.setState({usuario:data}));
 }
   
 
@@ -106,8 +100,8 @@ class App extends Component {
             <form onSubmit={this.onSubmit}>
                 <input 
                     name="auxiliar" 
+                    value={this.state.auxiliar}
                     onChange={this.handleChangeWeight} 
-                    type="json" 
                     placeholder="auxiliar"></input>
 
                 <button type="submit">Ver datos</button>                
@@ -116,7 +110,6 @@ class App extends Component {
             <ul>
               {usuario.map(depa =>
                 <li>
-                  <p>Hola hola</p>
                   <p>Usuario: {depa.id_usuario}, Nombre: {depa.nombre_usuario}, Contrasenia: {depa.contasena}</p>               
                 </li>
               )}

@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dev-node
-  namespace: backend
+  name: dev-react
+  namespace: frontend
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: node
+      app: react
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -16,14 +16,11 @@ spec:
   template:
     metadata:
       labels:
-        app: node
+        app: react
     spec:
       containers:
-      - image: garyjoan14/apinode
-        name: apinode
+      - image: garyjoan14/webreact
+        name: reactweb
         ports:
         - containerPort: 80
       restartPolicy: Always
-
-
- 

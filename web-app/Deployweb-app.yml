@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  namespace: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webweb  
+  template: 
+    metadata:
+      labels:
+        app: webweb
+    spec:
+      containers:
+        - image: sharolin/web
+          name: web 
+          ports:
+            - containerPort: 80
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-web-app
+  namespace: frontend
+spec:
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 80
+    selector:
+        app: webweb
+    type: LoadBalancer    
